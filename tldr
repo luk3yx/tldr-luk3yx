@@ -1,0 +1,108 @@
+#!/bin/bash
+#; A simple tldr manpage viewer by luk3yx.
+#; Version 1.0.
+#; 
+#: Requirements: wget and bash.
+#; This viewer does not locally cache pages, it downloads them each time.
+#; 
+#; This viewer uses the MIT license.
+#; 
+#; Copyright © 2017 luk3yx
+#; 
+#; Permission is hereby granted, free of charge, to any person obtaining a copy
+#; of this software and associated documentation files (the "Software"), to deal
+#; in the Software without restriction, including without limitation the rights
+#; to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#; copies of the Software, and to permit persons to whom the Software is
+#; furnished to do so, subject to the following conditions:
+#; 
+#; The above copyright notice and this permission notice shall be included in all
+#; copies or substantial portions of the Software.
+#; 
+#; THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+#; IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+#; FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+#; AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+#; LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+#; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+#; SOFTWARE.
+
+# Colour/color codes:
+title_code=$'\e[1m'
+title_reset=$'\e[m'
+param_code=$'\e[1;33m'
+param_reset="$title_reset"
+
+# Systems to search through, and the URL to use:
+systems=(common linux osx sunos)
+urls='https://raw.githubusercontent.com/tldr-pages/tldr/master/pages/*/$page.md'
+
+# Now for the script.
+if ! type wget &>/dev/null; then
+    echo "Error: 'wget' is not installed." >&2
+    echo "Try installing 'wget' and try again." >&2
+    exit 1
+fi
+status="0"
+if [ -z "$1" ] || [ "$#" = "0" ]; then
+    echo "Error: No page specified!" >&2
+    echo "Try running \`${0##*/} --help\` (without quotes)." >&2
+    exit 1
+elif [ "$#" != "1" ]; then
+    echo "Error: Only one option required!" >&2
+    echo "Try running \`${0##*/} --help\` (without quotes)." >&2
+    exit 2
+fi
+page="$1"
+case "$page" in
+    --help|-h|-help|--h|-\?|--\?|\/?)
+    page='tldr'
+    ;;
+    --update|-u|-update|--u|\/u|\/update)
+    echo "There is no cache in this tldr program, nothing to do!"
+    exit "$status"
+    ;;
+    --version|-v|-version|--v|\/v|\/version)
+    grep '^#;' "$0" | cut -d ' ' -f2-
+    exit
+    ;;
+    */*)
+    systems=('.')
+    ;;
+esac
+tmp=$(mktemp)
+trap 'rm "$tmp"' EXIT
+page=$(echo "$page" | tr "[:upper:]" "[:lower:]")
+found=''
+urls="${urls//\$page/$page}"
+for system in "${systems[@]}"; do
+    if [ "$system" = "." ]; then
+        url="${urls//\*\/}"
+        url="${url//\*}"
+    else
+        url="${urls//\*/$system}"
+    fi
+    if wget -qO- -- "$url" > "$tmp"; then
+        found="$system"
+        break
+    fi
+done
+if [ -z "$found" ]; then
+    echo "No tldr page for $page." >&2
+    [ "$page" = "tldr" ] && echo "Are you connected to the internet?" >&2
+    exit 1
+elif [ "$found" = "." ]; then
+    found=$(echo "$page" | cut -d '/' -f1)
+    page=$(echo "$page" | cut -d '/' -f2-)
+fi
+contents=$(cat "$tmp")
+contents=$'\e[m'"$contents"$'\n'
+contents="${contents//$'\n`'/$'\n    '}"
+contents="${contents/\# /$title_code}"
+contents="${contents/\> /$title_reset}"
+contents="${contents//\> }"
+contents="${contents//\{\{/$param_code}"
+contents="${contents//\}\}/$param_reset}"
+contents="${contents//$'`\n'/$'\n'}"
+echo "$contents" | less -R --prompt="\\ tldr page $page($found) line %l?L/%L. ?e(END) :?p%p\% ..(press h for help or q to quit)"
+exit "$status"
