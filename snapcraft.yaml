@@ -1,0 +1,23 @@
+name: tldr-luk3yx
+version: "1.0"
+summary: "A simple tldr viewer."
+description: |
+  tldr is a collection of community-maintained simplified manpages. You can
+  find out more at https://github.com/tldr-pages/tldr/blob/master/README.md.
+grade: stable
+confinement: strict
+
+apps:
+  tldr:
+    command: tldr
+    plugs: [network]
+    aliases: [tldr]
+  tldr-luk3yx:
+    command: tldr
+    plugs: [network]
+
+parts:
+  tldr:
+    source: .
+    plugin: dump
+    stage-packages: [wget]

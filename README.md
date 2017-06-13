@@ -33,7 +33,7 @@ sudo cp tldr /usr/local/bin
 ~~~
 
 ### As a snap (coming soon!):
-If you have a compatible system, simply [click here](snap://tldr-luk3yx) to install. Otherwise, run the following commands in a terminal:
+If you have a compatible system, simply [click here](snap://tldr-luk3yx) to install. Alternatively, run the following commands in a terminal:
 ~~~
 sudo snap install tldr-luk3yx
 sudo snap alias tldr-luk3yx tldr

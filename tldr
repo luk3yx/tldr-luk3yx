@@ -82,7 +82,7 @@ for system in "${systems[@]}"; do
     else
         url="${urls//\*/$system}"
     fi
-    if wget -qO- -- "$url" > "$tmp"; then
+    if wget -qO- -- "$url" > "$tmp" 2>/dev/null; then
         found="$system"
         break
     fi
