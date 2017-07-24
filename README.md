@@ -1,4 +1,7 @@
 # tldr-luk3yx
+
+[![Snap Status](https://build.snapcraft.io/badge/luk3yx/tldr-luk3yx.svg)](https://build.snapcraft.io/user/luk3yx/tldr-luk3yx)
+
 A simple bash tldr viewer.
 
 This viewer **does not comply with the [recommended standards](https://github.com/tldr-pages/tldr/wiki/Minimum-specifications-for-TLDR-command-line-clients)**.
