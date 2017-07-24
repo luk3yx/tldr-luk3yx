@@ -1,4 +1,7 @@
 # tldr-luk3yx
+
+[![Snap Status](https://build.snapcraft.io/badge/luk3yx/tldr-luk3yx.svg)](https://build.snapcraft.io/user/luk3yx/tldr-luk3yx)
+
 A simple bash tldr viewer.
 
 This viewer **does not comply with the [recommended standards](https://github.com/tldr-pages/tldr/wiki/Minimum-specifications-for-TLDR-command-line-clients)**.
@@ -32,7 +35,7 @@ chmod 755 tldr
 sudo cp tldr /usr/local/bin
 ~~~
 
-### As a snap (coming soon!):
+### As a snap (on Linux-based systems):
 If you have a compatible system, simply [click here](snap://tldr-luk3yx) to install. Alternatively, run the following commands in a terminal:
 ~~~
 sudo snap install tldr-luk3yx
