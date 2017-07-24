@@ -35,7 +35,7 @@ chmod 755 tldr
 sudo cp tldr /usr/local/bin
 ~~~
 
-### As a snap (coming soon!):
+### As a snap (on Linux-based systems):
 If you have a compatible system, simply [click here](snap://tldr-luk3yx) to install. Alternatively, run the following commands in a terminal:
 ~~~
 sudo snap install tldr-luk3yx
