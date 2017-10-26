@@ -1,6 +1,6 @@
 #!/bin/bash
 #; A simple tldr manpage viewer by luk3yx.
-#; Version 1.0.
+#; Version 1.1.
 #; 
 #: Requirements: wget and bash.
 #; This viewer does not locally cache pages, it downloads them each time.
