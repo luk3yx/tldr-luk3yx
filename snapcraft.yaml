@@ -1,5 +1,5 @@
 name: tldr-luk3yx
-version: "1.0"
+version: "1.1"
 summary: "A simple tldr viewer."
 description: |
   tldr is a collection of community-maintained simplified manpages. You can
